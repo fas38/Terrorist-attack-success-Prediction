@@ -1,0 +1,1 @@
+This folder is to store notes on related works that has been conducted.
