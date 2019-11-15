@@ -159,3 +159,33 @@ df_features['scite3'] = le.transform(df_features['scite3'].astype(str))
 
 df_features = df_features.apply(le.fit_transform)
 
+# # feature extraction
+
+# 1st method
+# test = SelectKBest(score_func=chi2, k=4)
+# fit = test.fit(df_features, df_label)
+# # summarize scores
+# np.set_printoptions(precision=3)
+# print(fit.scores_)
+# features = fit.transform(df_features)
+# # summarize selected features
+# print(features)
+
+# # 2nd method
+# bestfeatures = SelectKBest(score_func=chi2, k=30)
+# fit = bestfeatures.fit(df_features,df_label)
+# dfscores = pd.DataFrame(fit.scores_)
+# dfcolumns = pd.DataFrame(df_features.columns)
+# #concat two dataframes for better visualization 
+# featureScores = pd.concat([dfcolumns,dfscores],axis=1)
+# featureScores.columns = ['Specs','Score']  #naming the dataframe columns
+# print(featureScores.nlargest(134,'Score'))  #print 10 best features
+
+# 3rd method - feature importance
+model = ExtraTreesClassifier()
+model = model.fit(df_features,df_label)
+# print(model.feature_importances_)
+model = SelectFromModel(model, prefit=True)
+df_features = model.transform(df_features)
+print(df_features.shape)
+# feature_size = df_features.shape[1]
