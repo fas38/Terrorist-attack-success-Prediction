@@ -189,3 +189,40 @@ model = SelectFromModel(model, prefit=True)
 df_features = model.transform(df_features)
 print(df_features.shape)
 # feature_size = df_features.shape[1]
+
+
+# spliting dataset
+# X_train, X_test, y_train, y_test = train_test_split(df_features, df_label, 
+#     test_size=0.2, stratify=df_label)
+X_train, X_test, y_train, y_test = train_test_split(df_features, df_label, 
+    test_size=0.2,  shuffle=True, random_state=42)
+
+# # SMOTE
+sm = SMOTE(random_state=42, ratio=1.0)
+X_train, y_train = sm.fit_sample(X_train, y_train)
+
+#PCA
+# feature scaling
+scaler = StandardScaler()
+# Fit on training set only.
+scaler.fit(X_train)
+# Apply transform to both the training set and the test set.
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+# Make an instance of the Model
+pca = PCA(.95)
+pca.fit(X_train)
+feature_size = pca.n_components_
+print(pca.n_components_)
+X_train = pca.transform(X_train)
+X_test = pca.transform(X_test)
+
+
+
+
+
+# # dummy classifier
+dummy_clf = DummyClassifier(strategy = "most_frequent", random_state = 0)
+dummy_clf.fit(X_train, y_train) 
+score = dummy_clf.score(X_test, y_test) #baseline accuracy -> 0.8882467871983268 or 88.82%
+print(score)
