@@ -222,7 +222,46 @@ X_test = pca.transform(X_test)
 
 
 # # dummy classifier
-dummy_clf = DummyClassifier(strategy = "most_frequent", random_state = 0)
-dummy_clf.fit(X_train, y_train) 
-score = dummy_clf.score(X_test, y_test) #baseline accuracy -> 0.8882467871983268 or 88.82%
-print(score)
+# dummy_clf = DummyClassifier(strategy = "most_frequent", random_state = 0)
+# dummy_clf.fit(X_train, y_train) 
+# score = dummy_clf.score(X_test, y_test) #baseline accuracy -> 0.8882467871983268 or 88.82%
+# print(score)
+
+
+# define the keras model
+model = Sequential()
+model.add(Dense(16, input_dim=feature_size, activation='relu'))
+model.add(Dense(10, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+
+# model summary
+plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
+
+# compile the keras model
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+# fit the keras model on the dataset
+history = model.fit(X_train, y_train, validation_split=0.33, shuffle=True, epochs=400, batch_size=10000)
+
+# evaluate the keras model
+_,accuracy = model.evaluate(X_test, y_test)
+print('Accuracy: %.2f' % (accuracy*100))
+
+# list all data in history
+print(history.history.keys())
+# summarize history for accuracy
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('Model Accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'validation'], loc='upper left')
+plt.show()
+# summarize history for loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model Loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'validation'], loc='upper left')
+plt.show()
