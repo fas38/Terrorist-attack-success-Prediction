@@ -230,8 +230,24 @@ X_test = pca.transform(X_test)
 
 # define the keras model
 model = Sequential()
-model.add(Dense(16, input_dim=feature_size, activation='relu'))
-model.add(Dense(10, activation='relu'))
+# model.add(Dense(120, input_dim=feature_size, activation='relu'))
+# model.add(Dense(80, input_dim=feature_size, activation='relu'))
+# model.add(Dense(60, input_dim=feature_size, activation='relu'))
+# model.add(Dense(50, input_dim=feature_size, activation='relu'))
+# model.add(Dense(30, input_dim=feature_size, activation='relu'))
+# model.add(Dense(20, input_dim=feature_size, activation='relu'))
+# model.add(Dense(15, input_dim=feature_size, activation='relu'))
+# model.add(Dense(10, input_dim=feature_size, activation='relu'))
+# model.add(Dense(5, input_dim=feature_size, activation='relu'))
+# model.add(Dense(3, input_dim=feature_size, activation='relu'))
+
+# model.add(Dense(150, input_dim=feature_size, activation='relu'))
+# model.add(Dense(60, input_dim=feature_size, activation='relu'))
+# model.add(Dense(30, input_dim=feature_size, activation='relu'))
+
+model.add(Dense(120, input_dim=feature_size, activation='relu'))
+model.add(Dense(30, input_dim=feature_size, activation='relu'))
+
 model.add(Dense(1, activation='sigmoid'))
 
 # model summary
