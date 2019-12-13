@@ -37,3 +37,9 @@ feat_importances = pd.Series(model.feature_importances_, index=X.columns)
 feat_importances.nlargest(10).plot(kind='barh')
 plt.show()
 
+#K-Fold Cross Validation
+model = svm.SVC()
+accuracy = cross_val_score(model, X, y, scoring='accuracy', cv = 10)
+print(accuracy)
+#get the mean of each fold
+print("Accuracy of Model with Cross Validation is:",accuracy.mean() * 100)
