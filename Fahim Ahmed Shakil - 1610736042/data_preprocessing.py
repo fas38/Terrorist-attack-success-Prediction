@@ -228,33 +228,55 @@ X_test = pca.transform(X_test)
 # print(score)
 
 
-# define the keras model
-model = Sequential()
-# model.add(Dense(120, input_dim=feature_size, activation='relu'))
-# model.add(Dense(80, input_dim=feature_size, activation='relu'))
-# model.add(Dense(60, input_dim=feature_size, activation='relu'))
+# # define the keras model
+# model = Sequential()
+# # model.add(Dense(120, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(80, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(60, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(50, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(30, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(20, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(15, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(10, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(5, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(3, input_dim=feature_size, activation='relu'))
+
+# # model.add(Dense(150, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(60, input_dim=feature_size, activation='relu'))
+# # model.add(Dense(30, input_dim=feature_size, activation='relu'))
+
+# model.add(Dense(500, input_dim=feature_size, activation='relu'))
 # model.add(Dense(50, input_dim=feature_size, activation='relu'))
-# model.add(Dense(30, input_dim=feature_size, activation='relu'))
-# model.add(Dense(20, input_dim=feature_size, activation='relu'))
-# model.add(Dense(15, input_dim=feature_size, activation='relu'))
-# model.add(Dense(10, input_dim=feature_size, activation='relu'))
-# model.add(Dense(5, input_dim=feature_size, activation='relu'))
-# model.add(Dense(3, input_dim=feature_size, activation='relu'))
 
-# model.add(Dense(150, input_dim=feature_size, activation='relu'))
-# model.add(Dense(60, input_dim=feature_size, activation='relu'))
-# model.add(Dense(30, input_dim=feature_size, activation='relu'))
+# model.add(Dense(1, activation='sigmoid'))
 
-model.add(Dense(120, input_dim=feature_size, activation='relu'))
-model.add(Dense(30, input_dim=feature_size, activation='relu'))
+# # fully connected neural network with dropout in input layer
+# model = Sequential()
+# model.add(Dropout(0.2, input_shape=(feature_size,)))
+# model.add(Dense(120, activation='relu', kernel_constraint=maxnorm(3)))
+# model.add(Dense(30, activation='relu', kernel_constraint=maxnorm(3)))
+# model.add(Dense(1, activation='sigmoid'))
+# # Compile model
+# sgd = SGD(lr=0.1, momentum=0.9)
 
+# fully connected neural network with dropout in hidden layer
+model = Sequential()
+model.add(Dense(500, input_dim=feature_size, activation='relu', kernel_constraint=maxnorm(3)))
+model.add(Dropout(0.2))
+model.add(Dense(50, activation='relu', kernel_constraint=maxnorm(3)))
+model.add(Dropout(0.2))
+# model.add(Dense(20, activation='relu', kernel_constraint=maxnorm(3)))
+# model.add(Dropout(0.2))
 model.add(Dense(1, activation='sigmoid'))
+# Compile model
+sgd = SGD(lr=0.1, momentum=0.9)
 
 # model summary
 plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
 
 # compile the keras model
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+# model.compile(loss='binary_crossentropy', optimizer=sgd, metrics=['accuracy'])
 
 # fit the keras model on the dataset
 history = model.fit(X_train, y_train, validation_split=0.33, shuffle=True, epochs=400, batch_size=10000)
