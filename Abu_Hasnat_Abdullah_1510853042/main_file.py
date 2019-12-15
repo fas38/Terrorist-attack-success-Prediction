@@ -6,13 +6,14 @@ import matplotlib.pyplot as plt
 from matplotlib import pyplot as plt
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import svm
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
+from sklearn import model_selection
 
 print("HEllo")
 data = pd.read_csv("globalterrorismdb_0718dist.csv", encoding = "ISO-8859-1", low_memory = False)
@@ -63,3 +64,20 @@ classifier=SVC(kernel ='linear', C=1, gamma=1)
 classifier.fit(X_train, Y_train)
 y_pred= classifier.predict(X_test)
 print(accuracy_score(Y_test, y_pred))
+
+#Random Forest
+rfc = RandomForestClassifier()
+rfc.fit(X_train,Y_train)
+rfc_predict = rfc.predict(X_test)
+rfc_cv_score = cross_val_score(rfc, X, y, cv=10, scoring=’roc_auc’)
+print("=== Confusion Matrix ===")
+print(confusion_matrix(Y_test, rfc_predict))
+print('\n')
+print("=== Classification Report ===")
+print(classification_report(Y_test, rfc_predict))
+print('\n')
+print("=== All AUC Scores ===")
+print(rfc_cv_score)
+print('\n')
+print("=== Mean AUC Score ===")
+print("Mean AUC Score - Random Forest: ", rfc_cv_score.mean())
