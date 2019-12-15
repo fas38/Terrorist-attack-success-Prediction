@@ -11,6 +11,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn import svm
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
 
 print("HEllo")
 data = pd.read_csv("globalterrorismdb_0718dist.csv", encoding = "ISO-8859-1", low_memory = False)
@@ -51,3 +53,13 @@ predictor.fit(X=x, y=y)
 outcome = predictor.predict(X=X_TEST)
 coefficients = predictor.coef_
 print('Outcome : {}\nCoefficients : {}'.format(outcome, coefficients))
+
+#SVM
+X_train, X_test,Y_train, Y_test = train_test_split(x, y, test_size=0.25)
+sc= StandardScaler() # StandardScaler to normally distribute the input features, both train and test data. This way the data is distributed around 0, with a standard deviation of 1.
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+classifier=SVC(kernel ='linear', C=1, gamma=1)
+classifier.fit(X_train, Y_train)
+y_pred= classifier.predict(X_test)
+print(accuracy_score(Y_test, y_pred))
