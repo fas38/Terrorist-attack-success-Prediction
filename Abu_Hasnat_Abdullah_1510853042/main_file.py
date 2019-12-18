@@ -10,8 +10,8 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import svm
 from sklearn.model_selection import cross_val_score
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression,
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.svm import SVC
 from sklearn import model_selection
 
@@ -69,7 +69,7 @@ print(accuracy_score(Y_test, y_pred))
 rfc = RandomForestClassifier()
 rfc.fit(X_train,Y_train)
 rfc_predict = rfc.predict(X_test)
-rfc_cv_score = cross_val_score(rfc, X, y, cv=10, scoring=’roc_auc’)
+rfc_cv_score = cross_val_score(rfc, x, y, cv=10, scoring=’roc_auc’)
 print("=== Confusion Matrix ===")
 print(confusion_matrix(Y_test, rfc_predict))
 print('\n')
@@ -81,3 +81,37 @@ print(rfc_cv_score)
 print('\n')
 print("=== Mean AUC Score ===")
 print("Mean AUC Score - Random Forest: ", rfc_cv_score.mean())
+
+#ANN
+model = Sequential([
+    Dense(12, activation='relu', input_shape=( 25 ,)),
+    Dense(15, activation='relu'),
+    Dense(1, activation='sigmoid')
+])
+model.compile(optimizer='sgd',
+              loss='binary_crossentropy',
+              metrics=['accuracy'])
+
+hist = model.fit(X_train, Y_train, batch_size=57, epochs=1000, validation_split=0.2)
+#visualize the training accuracy and the validation accuracy to see if the model is overfitting
+plt.plot(hist.history['acc'])
+plt.plot(hist.history['val_acc'])
+plt.title('Model accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Val'], loc='lower right')
+plt.show()
+pred = model.predict(X_train)
+pred  = [1 if y>=0.5 else 0 for y in pred] #Threshold
+print(classification_report(y_train ,pred ))
+print('Confusion Matrix: \n',confusion_matrix(y_train,pred))
+print()
+print('Accuracy: ', accuracy_score(y_train,pred))
+print()
+pred = model.predict(X_test)
+pred  = [1 if y>=0.5 else 0 for y in pred] #Threshold
+print(classification_report(y_test ,pred ))
+print('Confusion Matrix: \n',confusion_matrix(y_test,pred))
+print()
+print('Accuracy: ', accuracy_score(y_test,pred))
+print()
