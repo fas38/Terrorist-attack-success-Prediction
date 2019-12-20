@@ -1,12 +1,31 @@
 import pandas as pd
 import numpy as np
-from sklearn.tree import DecisionTreeClassifier # Import Decision Tree Classifier
-from sklearn.dummy import DummyClassifier
-from sklearn.model_selection import train_test_split # Import train_test_split function
-from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+from sklearn.feature_selection import SelectFromModel
+from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.dummy import DummyClassifier
+from sklearn.svm import SVC
+from sklearn import metrics
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.constraints import maxnorm
+from keras.optimizers import SGD
+from keras.layers import BatchNormalization
+from imblearn.over_sampling import SMOTE
+from matplotlib import pyplot as plt
+from keras.utils.vis_utils import plot_model
 
-df = pd.read_csv("../global_terrorism_database_2017.csv", encoding='ISO-8859-1', low_memory=False)
+# df = pd.read_csv("../global_terrorism_database_2017.csv", encoding='ISO-8859-1', low_memory=False)
+
+df1 = pd.read_csv("gtd01.csv", encoding='ISO-8859-1')
+df2 = pd.read_csv("gtd01.csv", encoding='ISO-8859-1')
+df = pd.concat([df1, df2])
 
 # feature and label
 col = list(df.columns.values)
@@ -263,13 +282,15 @@ X_test = pca.transform(X_test)
 model = Sequential()
 model.add(Dense(500, input_dim=feature_size, activation='relu', kernel_constraint=maxnorm(3)))
 model.add(Dropout(0.2))
+model.add(BatchNormalization())
 model.add(Dense(50, activation='relu', kernel_constraint=maxnorm(3)))
 model.add(Dropout(0.2))
+model.add(BatchNormalization())
 # model.add(Dense(20, activation='relu', kernel_constraint=maxnorm(3)))
 # model.add(Dropout(0.2))
 model.add(Dense(1, activation='sigmoid'))
 # Compile model
-sgd = SGD(lr=0.1, momentum=0.9)
+# sgd = SGD(lr=0.1, momentum=0.9)
 
 # model summary
 plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
