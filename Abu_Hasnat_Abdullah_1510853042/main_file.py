@@ -23,14 +23,14 @@ y = data.iloc[:,-1]    #target column i.e price range
 bestfeatures = SelectKBest(score_func=chi2, k=25)
 
 #apply SelectKBest class to extract top 25 best features
-bestfeatures = SelectKBest(score_func=chi2, k=25)
-fit = bestfeatures.fit(x,y)
-dfscores = pd.DataFrame(fit.scores_)
-dfcolumns = pd.DataFrame(x.columns)
-#concat two dataframes for better visualization
-featureScores = pd.concat([dfcolumns,dfscores],axis=1)
-featureScores.columns = ['Specs','Score']  #naming the dataframe columns
-print(featureScores.nlargest(25,'Score'))  #print 25 best feature
+# bestfeatures = SelectKBest(score_func=chi2, k=25)
+# fit = bestfeatures.fit(x,y)
+# dfscores = pd.DataFrame(fit.scores_)
+# dfcolumns = pd.DataFrame(x.columns)
+# #concat two dataframes for better visualization
+# featureScores = pd.concat([dfcolumns,dfscores],axis=1)
+# featureScores.columns = ['Specs','Score']  #naming the dataframe columns
+# print(featureScores.nlargest(25,'Score'))  #print 25 best feature
 
 # Feature Selection
 model = ExtraTreesClassifier()
@@ -48,7 +48,7 @@ print(accuracy)
 #get the mean of each fold
 print("Accuracy of Model with Cross Validation is:",accuracy.mean() * 100)
 
-#Linear regression
+#Linear regression Just for FUN
 predictor = LinearRegression(n_jobs=-1)
 predictor.fit(X=x, y=y)
 outcome = predictor.predict(X=X_TEST)
@@ -115,3 +115,5 @@ print('Confusion Matrix: \n',confusion_matrix(y_test,pred))
 print()
 print('Accuracy: ', accuracy_score(y_test,pred))
 print()
+
+#CNN
