@@ -103,17 +103,23 @@ plt.legend(['Train', 'Val'], loc='lower right')
 plt.show()
 pred = model.predict(X_train)
 pred  = [1 if y>=0.5 else 0 for y in pred] #Threshold
-print(classification_report(y_train ,pred ))
-print('Confusion Matrix: \n',confusion_matrix(y_train,pred))
+print(classification_report(Y_train ,pred ))
+print('Confusion Matrix: \n',confusion_matrix(Y_train,pred))
 print()
-print('Accuracy: ', accuracy_score(y_train,pred))
+print('Accuracy: ', accuracy_score(Y_train,pred))
 print()
 pred = model.predict(X_test)
 pred  = [1 if y>=0.5 else 0 for y in pred] #Threshold
-print(classification_report(y_test ,pred ))
-print('Confusion Matrix: \n',confusion_matrix(y_test,pred))
+print(classification_report(Y_test ,pred ))
+print('Confusion Matrix: \n',confusion_matrix(Y_test,pred))
 print()
-print('Accuracy: ', accuracy_score(y_test,pred))
+print('Accuracy: ', accuracy_score(Y_test,pred))
 print()
 
-#CNN
+#XGBoost
+xgb_cl = xgb.XGBClassifier(n_estimators=15,learning_rate=0.5,max_delta_step=5)
+xgb_cl.fit(X_train,Y_train)
+preds = xgb_cl.predict(X_test)
+# Compute the accuracy: accuracy
+accuracy = float(np.sum(preds==Y_test))/Y_test.shape[0]
+print("accuracy: %f" % (accuracy))
