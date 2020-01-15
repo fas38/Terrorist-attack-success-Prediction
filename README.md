@@ -1,1 +1,2 @@
-This repository is for CSE465 course.
+This repository is for Patttern recognition & Neural Networks (CSE465) course's project. Aim to the Project is to predict Success or fail of a Terrorist attack. We collected Raw dataset from https://datacatalog.worldbank.org/dataset/world-external-geospatial-platforms-conflict/resource/bd582592-97c1-4667-b47c-5ac57f2c4cad
+We used different technic & algorithms to get higher accuracy rate. At the last wwe got 92.6% accuracy by ensemble learning- Random Forest.
